@@ -1,24 +1,46 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import Modal from "./components/modal";
+import React, { useState } from 'react';
+import { Route, Switch } from "react-router-dom";
+import Header from './components/Header';
+import Home from './components/Home';
+import Base from './components/Base';
+import Toppings from './components/Toppings';
+import Order from './components/Order';
+
 function App() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const close = () => setModalOpen(false);
-  const open = () => setModalOpen(true);
+  const [pizza, setPizza] = useState({ base: "", toppings: [] });
+
+  const addBase = (base) => {
+    setPizza({ ...pizza, base })
+  }
+  
+  const addTopping = (topping) => {
+    let newToppings;
+    if(!pizza.toppings.includes(topping)){
+      newToppings = [...pizza.toppings, topping];
+    } else {
+      newToppings = pizza.toppings.filter(item => item !== topping);
+    }
+    setPizza({ ...pizza, toppings: newToppings });
+  }
+
   return (
-    <div className="App">
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="save_button"
-        onClick={() => (modalOpen ? close() : open())}
-      >
-        Launch Modal
-      </motion.button>
-      <AnimatePresence initial={false} exitBeforeEnter={true}>
-        {modalOpen && <Modal modalOpen={modalOpen} handleClose={close} />}
-      </AnimatePresence>
-    </div>
+    <>
+      <Header />
+      <Switch>
+        <Route path="/base">
+          <Base addBase={addBase} pizza={pizza} />
+        </Route>
+        <Route path="/toppings">
+          <Toppings addTopping={addTopping} pizza={pizza} />
+        </Route>
+        <Route path="/order">
+          <Order pizza={pizza} />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </>
   );
 }
 
