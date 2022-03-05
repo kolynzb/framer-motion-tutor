@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Base from "./components/Base";
 import Toppings from "./components/Toppings";
 import Order from "./components/Order";
+import Framer from "./pages/Framer";
 
 function App() {
   const [pizza, setPizza] = useState({ base: "", toppings: [] });
@@ -41,6 +42,7 @@ function App() {
           <Route path="/order" element={<Order pizza={pizza} />} />
 
           <Route path="/" element={<Home />} />
+          <Route path="/framer" element={<Framer />} />
         </Routes>
       </Router>
     </>
